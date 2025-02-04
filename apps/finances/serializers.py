@@ -22,6 +22,9 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    subcategory = SubCategorySerializer()
+
     class Meta:
         model = Transaction
         exclude = ("uuid", "created_at", "updated_at",)
