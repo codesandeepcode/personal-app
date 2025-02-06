@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.accounts.models import UserData
 
 from apps.models import BaseModel
 
 
 class BankAccount(BaseModel):
     bank_name = models.CharField(max_length=100)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
     account_number = models.CharField(max_length=20)
     balance = models.DecimalField(max_digits=15, decimal_places=2)
 
@@ -43,7 +43,7 @@ class Transaction(BaseModel):
         (EXPENSE, "Expense"),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     transaction_type = models.CharField(max_length=7, choices=TRANSACTION_TYPE_CHOICES, default=EXPENSE)
     description = models.TextField()
@@ -67,7 +67,7 @@ class FixedExpense(BaseModel):
     )
     name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
     due_date = models.DateField()
     frequency = models.CharField(max_length=50, choices=FRQUENCY_CHOICES)
 
@@ -76,7 +76,7 @@ class FixedExpense(BaseModel):
 
 
 class Investment(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     amount_invested = models.DecimalField(max_digits=15, decimal_places=2)
     current_value = models.DecimalField(max_digits=15, decimal_places=2)
@@ -87,7 +87,7 @@ class Investment(BaseModel):
 
 
 class Borrowing(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     amount_borrowed = models.DecimalField(max_digits=15, decimal_places=2)
     amount_paid = models.DecimalField(max_digits=15, decimal_places=2)
@@ -98,7 +98,7 @@ class Borrowing(BaseModel):
     
 
 class Plan(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     target_amount = models.DecimalField(max_digits=15, decimal_places=2)
     target_date = models.DateField()
