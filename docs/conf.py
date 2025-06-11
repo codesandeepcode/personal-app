@@ -9,8 +9,16 @@ import os
 import sys
 import django
 
+from datetime import date
+
+sys.path.insert(0, os.path.abspath('../..'))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+django.setup()
+
+# sphinx-apidoc -o . ..
+
 project = 'Personal Finance Management'
-copyright = '2025, Sandeep Yadav'
+copyright = f"{date.today().year}, Sandeep Yadav"
 author = 'Sandeep Yadav'
 release = '1.0.0'
 
@@ -18,6 +26,8 @@ release = '1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
     "sphinx_rtd_theme",
 ]
 
@@ -31,9 +41,3 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
-
-sys.path.insert(0, os.path.abspath('../..'))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'conf.settings')
-django.setup()
-
-# sphinx-apidoc -o . ..
