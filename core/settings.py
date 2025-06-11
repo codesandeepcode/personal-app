@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "docs",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 ]
 
 MIDDLEWARE = [
@@ -133,8 +135,29 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
-    ]
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 DOCS_ROOT = os.path.join(BASE_DIR, "docs", "_build", "html")
 DOCS_ACCESS = "public"  # Options: "public", "login_required", "staff", "superuser"
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Personal Finance Management API",
+    "DESCRIPTION": "API for managing finances, accounts, and transactions.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/v1",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "PREPROCESSING_HOOKS": [
+        "drf_spectacular.hooks.preprocess_schema_for_docs",
+    ],
+}
+
+SPECTACULAR_SETTINGS = {
+    "SWAGGER_SETTINGS": {
+        "SWAGGER_UI_DIST": "SIDECAR",
+        "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+        "REDOC_DIST": "SIDECAR",
+    }
+}
