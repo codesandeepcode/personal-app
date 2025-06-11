@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.accounts",
     "rest_framework",
     "rest_framework_simplejwt",
+    "docs",
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ]
 }
+
+DOCS_ROOT = os.path.join(BASE_DIR, "docs", "_build", "html")
+DOCS_ACCESS = "public"  # Options: "public", "login_required", "staff", "superuser"
