@@ -82,7 +82,7 @@ class InvestmentSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
-        exclude = ("id", "created_at", "updated_at", "profit_loss",)
+        read_only_fields = ("id", "created_at", "updated_at", "profit_loss",)
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
