@@ -69,7 +69,20 @@ class RecurringTransactionSerializer(serializers.ModelSerializer):
 class InvestmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Investment
-        exclude = ("id", "created_at", "updated_at",)
+        fields = (
+            "id",
+            "name",
+            "investment_type",
+            "symbol",
+            "purchase_date",
+            "quantity",
+            "purchase_price",
+            "current_price",
+            "profit_loss",
+            "created_at",
+            "updated_at",
+        )
+        exclude = ("id", "created_at", "updated_at", "profit_loss",)
 
 
 class BorrowingSerializer(serializers.ModelSerializer):

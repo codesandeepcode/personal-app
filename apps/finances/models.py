@@ -106,14 +106,43 @@ class RecurringTransaction(BaseModel):
 
 
 class Investment(BaseModel):
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+    STOCK = 'STOCK'
+    BOND = 'BOND'
+    MUTUAL_FUND = 'MUTUAL_FUND'
+    ETF = 'ETF'
+    REAL_ESTATE = 'REAL_ESTATE'
+    CRYPTO = 'CRYPTO'
+    GOLD = 'GOLD'
+    OTHER = 'OTHER'
+
+    INVESTMENT_TYPES = [
+        (STOCK, 'Stock'),
+        (BOND, 'Bond'),
+        (MUTUAL_FUND, 'Mutual Fund'),
+        (ETF, 'Exchange-Traded Fund'),
+        (REAL_ESTATE, 'Real Estate'),
+        (CRYPTO, 'Cryptocurrency'),
+        (GOLD, 'Gold'),
+        (OTHER, 'Other'),
+    ]
+
+    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="investments")
+    investment_type = models.CharField(max_length=20, choices=INVESTMENT_TYPES, default=STOCK)
     name = models.CharField(max_length=255)
-    amount_invested = models.DecimalField(max_digits=15, decimal_places=2)
-    current_value = models.DecimalField(max_digits=15, decimal_places=2)
-    investment_date = models.DateField()
+    symbol = models.CharField(max_length=10, blank=True, null=True)
+    purchase_date = models.DateField()
+    quantity = models.DecimalField(max_digits=15, decimal_places=4)
+    purchase_price = models.DecimalField(max_digits=15, decimal_places=2)
+    current_price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} - {self.current_value}"
+        return f"{self.name} - ({self.investment_type})"
+    
+    @property
+    def profit_loss(self):
+        if self.current_value and self.purchase_price and self.quantity:
+            return (self.current_price - self.purchase_price) * self.quantity
+        return None
 
 
 class Borrowing(BaseModel):

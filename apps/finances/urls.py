@@ -1,10 +1,21 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .views import BankAccountListCreateView, BankAccountDetailView, TransactionListCreateView, TransactionDetailView, transaction_list_view, transaction_create_view, TransferViewSet, TransactionSummaryView
+from .views import (
+    BankAccountListCreateView,
+    BankAccountDetailView,
+    TransactionListCreateView,
+    TransactionDetailView,
+    transaction_list_view,
+    transaction_create_view,
+    TransferViewSet,
+    TransactionSummaryView,
+    InvestmentViewSet,
+)
 
 router = DefaultRouter()
 router.register(r'transfers', TransferViewSet, basename='transfer')
+router.register(r'investments', InvestmentViewSet, basename='investment')
 
 urlpatterns = [
     path("bank-accounts/", BankAccountListCreateView.as_view(), name="bankaccount-list-create"),

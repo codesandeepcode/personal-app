@@ -7,9 +7,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
 from django.db.models import Sum
+from rest_framework.filters import SearchFilter
 
-from .models import BankAccount, Transaction, Transfer
-from .serializers import BankAccountSerializer, TransactionSerializer, TransferSerializer
+from .models import BankAccount, Transaction, Transfer, Investment
+from .serializers import BankAccountSerializer, TransactionSerializer, TransferSerializer, InvestmentSerializer
 from .forms import TransactionForm
 
 
@@ -139,3 +140,16 @@ class TransactionSummaryView(APIView):
             'net_change': net_change
         }, status=status.HTTP_200_OK)
 
+
+class InvestmentViewSet(viewsets.ModelViewSet):
+    serializer_class = InvestmentSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ["investment_type", "purchase_date"]
+    search_fields = ["name", "symbol"]
+
+    def get_queryset(self):
+        return Investment.active_objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
