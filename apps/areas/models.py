@@ -1,4 +1,5 @@
 """Areas application models for Database related functions."""
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -31,11 +32,10 @@ class Area(BaseModel):
     name = models.CharField(_("areas of life"), max_length=10, choices=AREA_CHOICES)
     slug = models.SlugField(_("slug"), max_length=100, unique=True)
 
-
     class Meta:
-        verbose_name = 'Area'
-        verbose_name_plural = 'Areas'
-        ordering = ['name']
+        verbose_name = "Area"
+        verbose_name_plural = "Areas"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

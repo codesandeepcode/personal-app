@@ -1,20 +1,24 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
+
 from apps.finances.models import RecurringTransaction, Transaction
 
+
 class Command(BaseCommand):
-    help = 'Process recurring transactions'
+    help = "Process recurring transactions"
 
     def handle(self, *args, **kwargs):
         today = timezone.now().date()
-        for rt in RecurringTransaction.active_objects.filter(start_date__lte=today, end_date__gte=today):
+        for rt in RecurringTransaction.active_objects.filter(
+            start_date__lte=today, end_date__gte=today
+        ):
             if not rt.last_processed or self.should_process(rt, today):
                 Transaction.objects.create(
                     user=rt.user,
                     bank_account=rt.account,
                     amount=rt.amount,
                     transaction_type=rt.transaction_type,
-                    description=rt.description
+                    description=rt.description,
                 )
                 rt.last_processed = today
                 rt.save()

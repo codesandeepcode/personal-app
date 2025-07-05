@@ -1,12 +1,21 @@
+from .models import (
+    BankAccount,
+    Borrowing,
+    Category,
+    Investment,
+    Plan,
+    RecurringTransaction,
+    SubCategory,
+    Transaction,
+)
 from django.contrib import admin
 
-from .models import BankAccount, Category, SubCategory, Transaction, RecurringTransaction, Investment, Borrowing, Plan
 
 @admin.register(BankAccount)
 class BankAccountAdmin(admin.ModelAdmin):
-    list_display = ('account_name', 'bank_name', 'balance', 'user')
-    search_fields = ('account_name', 'bank_name', 'account_number')
-    list_filter = ('user', 'bank_name')
+    list_display = ("account_name", "bank_name", "balance", "user")
+    search_fields = ("account_name", "bank_name", "account_number")
+    list_filter = ("user", "bank_name")
 
 
 admin.site.register(Category)

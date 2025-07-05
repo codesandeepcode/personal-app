@@ -1,0 +1,30 @@
+[lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "DJ", # flake8-django
+    "UP", # pyupgrade
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    "E501", # Line length (handled by formatter)
+    "DJ008", # Allow models without __str__ in some cases
+    "RUF012", # Mutable class attributes should be annotated with ClassVar (no mutable class attributes in current codebase)
+]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[lint.per-file-ignores]
+"tests/*" = ["DJ001"]  # Ignore nullable string field warnings in tests
+"*/migrations/*" = ["F401"]  # Ignore unused imports in migrations
+
+[lint.isort]
+known-third-party = ["django", "rest_framework"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local"]

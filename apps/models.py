@@ -6,7 +6,7 @@ from django.db import models
 class OnlyActiveManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_active=True)
-    
+
 
 class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -16,6 +16,10 @@ class BaseModel(models.Model):
 
     objects = models.Manager()
     active_objects = OnlyActiveManager()
+
+    class Meta:
+        abstract = True
+        ordering = ("-updated_at",)
 
     def delete(self, *args, **kwargs):
         self.is_active = False
@@ -27,7 +31,3 @@ class BaseModel(models.Model):
 
     def permanent_delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
-
-    class Meta:
-        abstract = True
-        ordering = ("-updated_at",)

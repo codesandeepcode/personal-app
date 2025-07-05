@@ -1,7 +1,7 @@
 """Areas application URL configuration for Django."""
-from .views import AreaListView, AreaDetailView
-from django.urls import path
 
+from .views import AreaDetailView, AreaListView
+from django.urls import path
 
 urlpatterns = [
     path("", AreaListView.as_view(), name="area-list"),
