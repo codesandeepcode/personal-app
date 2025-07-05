@@ -1,5 +1,5 @@
 from django.test import TestCase
-from apps.accounts.models import User
+from apps.accounts.models.user import User
 from .models import BankAccount, Transaction, Transfer
 
 class TransactionTestCase(TestCase):
@@ -44,21 +44,24 @@ class TransferTestCase(TestCase):
             source_account=self.account1,
             destination_account=self.account2,
             amount=200,
-            description='Test transfer'
+            description='Test transfer',
+            date='2023-10-01T00:00:00Z'
         )
         Transaction.objects.create(
             user=self.user,
-            account=self.account1,
+            bank_account=self.account1,
             amount=-200,
             transaction_type='TRANSFER',
-            transfer=transfer
+            transfer=transfer,
+            date='2023-10-01T00:00:00Z'
         )
         Transaction.objects.create(
             user=self.user,
-            account=self.account2,
+            bank_account=self.account2,
             amount=200,
             transaction_type='TRANSFER',
-            transfer=transfer
+            transfer=transfer,
+            date='2023-10-01T00:00:00Z'
         )
         self.account1.refresh_from_db()
         self.account2.refresh_from_db()

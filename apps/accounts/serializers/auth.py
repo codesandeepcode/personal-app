@@ -1,17 +1,9 @@
 """
-Serializer for the User model and authentication.
+Serializer for authentication (registration and login).
 """
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import User
-
-
-class UserSerializer(serializers.ModelSerializer):
-    """Serializer for creating and updating User instances."""
-    class Meta:
-        model = User
-        fields = ["id", "email", "name", "is_active", "date_joined"]
-        read_only_fields = ["id", "date_joined"]
+from apps.accounts.models.user import User
 
 
 class RegisterSerializer(serializers.Serializer):

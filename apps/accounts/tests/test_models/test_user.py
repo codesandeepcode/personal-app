@@ -3,7 +3,7 @@ Tests for the custom user model and its manager.
 """
 import pytest
 from django.test import TestCase
-from .models import User
+from apps.accounts.models.user import User
 
 
 @pytest.mark.django_db
