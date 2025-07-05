@@ -28,7 +28,7 @@
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="code" class="form-label">OTP</label>
-                                <input type="text" class="form-control" id="code" name="code" required maxlength="6" pattern="[0-9]{6}">
+                                <input type="text" class="form-control" id="code" name="code" required maxlength="6" pattern="[0-9A-Za-z]{6}">
                                 <div class="invalid-feedback">
                                     Please enter a valid 6-digit OTP.
                                 </div>

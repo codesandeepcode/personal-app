@@ -147,3 +147,4 @@ SPECTACULAR_SETTINGS = {
 #SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME type sniffing
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = "noreply@life.com"

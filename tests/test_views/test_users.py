@@ -127,7 +127,7 @@ class SessionViewTests(TestCase):
         })
         assert response.status_code == 302
         assert response.url == reverse('otp_verify')
-        assert self.client.session['pending_user_id']
+        assert self.client.session['pending_user_email'] == 'test@example.com'
         assert len(mail.outbox) == 1
         assert 'Your one-time password is' in mail.outbox[0].body
 
@@ -156,7 +156,7 @@ class SessionViewTests(TestCase):
         """Test successful OTP verification."""
         user = User.objects.get(email='test@example.com')
         self.client.force_login(user)
-        self.client.session['pending_user_id'] = user.id
+        self.client.session['pending_user_email'] = user.email
         self.client.session.save()
         OTP.objects.create(
             user=user,
@@ -175,7 +175,7 @@ class SessionViewTests(TestCase):
         """Test invalid OTP verification."""
         user = User.objects.get(email='test@example.com')
         self.client.force_login(user)
-        self.client.session['pending_user_id'] = user.id
+        self.client.session['pending_user_email'] = user.email
         self.client.session.save()
         response = self.client.post(reverse('otp_verify'), {'code': '999999'})
         assert response.status_code == 200

@@ -25,6 +25,9 @@ class OTP(models.Model):
     @classmethod
     def generate_otp(cls, user):
         """Generate a new OTP for the user."""
+        # invalidate any existing OTPs for the user
+        cls.objects.filter(user=user, is_used=False).update(is_used=True)
+        # create a new OTP
         code = ''.join(secrets.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') for _ in range(6))
         expires_at = timezone.now() + timezone.timedelta(minutes=5)
         return cls.objects.create(user=user, code=code, expires_at=expires_at)

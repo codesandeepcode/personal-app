@@ -1,8 +1,12 @@
 """
 Session-based views for UI authentication with optional 2FA.
 """
+from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+
+from apps.users.models.otp import OTP
 
 
 def login_view(request):
@@ -13,8 +17,17 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             if user.use_2fa:
+                otp = OTP.generate_otp(user)
+                # Send OTP via email
+                send_mail(
+                    subject='Your OTP for Login',
+                    message=f'Your one-time password is: {otp.code}\nIt is valid for 5 minutes.',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                )
                 # Store user ID in session for OTP verification
-                request.session['pending_user_id'] = user.id
+                request.session['pending_user_email'] = user.email
                 # Generate OTP (done in LoginSerializer for consistency)
                 return redirect('otp_verify')
             else:

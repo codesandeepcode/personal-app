@@ -33,11 +33,11 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data
             if user.use_2fa:
-                # Store user ID in session for OTP verification
-                request.session['pending_user_id'] = user.id
+                # Store user email in session for OTP verification
+                request.session['pending_user_email'] = user.email
                 return Response({
                     'message': 'OTP sent to your email.',
-                    'user_id': user.id
+                    'user_email': user.email
                 }, status=status.HTTP_200_OK)
             else:
                 # Issue tokens directly if 2FA is disabled
