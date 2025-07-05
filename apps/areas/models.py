@@ -1,9 +1,12 @@
+"""Areas application models for Database related functions."""
 from django.db import models
 
 from apps.models import BaseModel
 
 
 class Area(BaseModel):
+    """Model representing different areas of life."""
+
     HEALTH = "Physical and Health"
     FINANCE = "Financial and Cash Flow"
     HOBBY = "Recreational, Hobbies and Vacations"

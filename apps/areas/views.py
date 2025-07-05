@@ -1,3 +1,8 @@
+"""
+Areas application views for handling area-related API requests.
+This module defines API views for listing and retrieving area information.
+It includes views for both listing all areas and retrieving details of a specific area.
+"""
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
