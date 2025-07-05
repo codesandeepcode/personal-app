@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth import authenticate
 from .models import CustomUser
 
 
@@ -13,19 +14,23 @@ class CustomUserChangeForm(UserChangeForm):
         model = CustomUser
         fields = ('email', 'name')
 
-class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.EmailField(label='Email', max_length=254, widget=forms.EmailInput(attrs={'autofocus': True}))
-    
+class CustomAuthenticationForm(AuthenticationForm):  
     class Meta:
         model = CustomUser
         fields = ('email', 'password')
     
     def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get('username')
-        password = cleaned_data.get('password')
-        
-        if not CustomUser.objects.filter(email=email).exists():
-            raise forms.ValidationError("User with this email does not exist.")
-        
-        return cleaned_data
+        super(CustomAuthenticationForm, self).clean()
+        email = self.cleaned_data.get('email')
+        if email:
+            password = self.cleaned_data.get('password')
+            self.user_cache = authenticate(
+                self.request,
+                username=email,
+                password=password,
+            )
+            if self.user_cache is None:
+                raise forms.ValidationError(
+                    "Invalid email or password."
+                )
+        return self.cleaned_data
