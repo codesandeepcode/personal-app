@@ -1,6 +1,6 @@
 from django.test import TestCase
 from apps.users.models.user import User
-from .models import BankAccount, Transaction, Transfer
+from apps.finances.models import BankAccount, Transaction, Transfer
 
 class TransactionTestCase(TestCase):
     def setUp(self):
