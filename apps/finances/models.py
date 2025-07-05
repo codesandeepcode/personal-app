@@ -1,12 +1,12 @@
 from django.db import models
-from apps.accounts.models import UserData
+from apps.accounts.models import CustomUser
 
 from apps.models import BaseModel
 
 
 class BankAccount(BaseModel):
     account_name = models.CharField(max_length=100)
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="bank_accounts")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="bank_accounts")
     account_number = models.CharField(max_length=50, unique=True)
     bank_name = models.CharField(max_length=100)
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
@@ -17,7 +17,7 @@ class BankAccount(BaseModel):
 
 class Category(BaseModel):
     name = models.CharField(max_length=100, unique=True)
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="categories")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="categories")
 
     def __str__(self):
         return f"{self.name}"
@@ -50,7 +50,7 @@ class Transaction(BaseModel):
         (PAYMENT, 'Payment'),
     ]
 
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="transactions")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="transactions")
     bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name="transactions")
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES, default=PAYMENT)
@@ -65,7 +65,7 @@ class Transaction(BaseModel):
     
 
 class Transfer(BaseModel):
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="transfers")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="transfers")
     source_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name="transfers_out")
     destination_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name="transfers_in")
     amount = models.DecimalField(max_digits=15, decimal_places=2)
@@ -91,7 +91,7 @@ class RecurringTransaction(BaseModel):
     )
 
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="recurring_transactions")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="recurring_transactions")
     account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name="recurring_transactions")
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     transaction_type = models.CharField(max_length=10, choices=Transaction.TRANSACTION_TYPES, default=Transaction.PAYMENT)
@@ -126,7 +126,7 @@ class Investment(BaseModel):
         (OTHER, 'Other'),
     ]
 
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="investments")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="investments")
     investment_type = models.CharField(max_length=20, choices=INVESTMENT_TYPES, default=STOCK)
     name = models.CharField(max_length=255)
     symbol = models.CharField(max_length=10, blank=True, null=True)
@@ -146,7 +146,7 @@ class Investment(BaseModel):
 
 
 class Borrowing(BaseModel):
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     amount_borrowed = models.DecimalField(max_digits=15, decimal_places=2)
     amount_paid = models.DecimalField(max_digits=15, decimal_places=2)
@@ -157,7 +157,7 @@ class Borrowing(BaseModel):
     
 
 class Plan(BaseModel):
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     target_amount = models.DecimalField(max_digits=15, decimal_places=2)
     target_date = models.DateField()

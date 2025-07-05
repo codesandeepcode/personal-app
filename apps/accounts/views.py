@@ -4,7 +4,6 @@ from .serializers import UserSerializer
 from rest_framework.response import Response
 
 
-# view for registering users
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)

@@ -1,10 +1,10 @@
 from django.test import TestCase
-from apps.accounts.models import UserData
+from apps.accounts.models import CustomUser
 from .models import BankAccount, Transaction, Transfer
 
 class TransactionTestCase(TestCase):
     def setUp(self):
-        self.user = UserData.objects.create_user(
+        self.user = CustomUser.objects.create_user(
             email='testuser@mail.in',
             password='testpassword',
         )
@@ -34,7 +34,7 @@ class TransactionTestCase(TestCase):
 
 class TransferTestCase(TestCase):
     def setUp(self):
-        self.user = UserData.objects.create_user(email='testuser@email.in', password='12345')
+        self.user = CustomUser.objects.create_user(email='testuser@email.in', password='12345')
         self.account1 = BankAccount.objects.create(user=self.user, account_name='A1', account_number='123', bank_name='Test', balance=1000)
         self.account2 = BankAccount.objects.create(user=self.user, account_name='A2', account_number='456', bank_name='Test', balance=500)
 
