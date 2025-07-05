@@ -29,14 +29,8 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     "apps.users",
     "apps.areas",
-    "apps.family",
     "apps.finances",
-    "apps.friends",
     "apps.health",
-    "apps.hobbies",
-    "apps.romance",
-    "apps.spiritual",
-    "apps.work",
 )
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
