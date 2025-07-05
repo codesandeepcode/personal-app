@@ -8,8 +8,8 @@ class AreaSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class for AreaSerializer."""
         model = Area
-        fields = ['id', 'name']
-        read_only_fields = ['id']
+        fields = ['name', 'slug']
+        read_only_fields = ['slug']
         extra_kwargs = {
             'name': {'required': True, 'allow_blank': False}
         }

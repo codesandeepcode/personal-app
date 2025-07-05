@@ -5,5 +5,5 @@ from django.urls import path
 
 urlpatterns = [
     path("", AreaListView.as_view(), name="area-list"),
-    path("<str:pk>/", AreaDetailView.as_view(), name="area-detail"),
+    path("<str:slug>/", AreaDetailView.as_view(), name="area-detail"),
 ]

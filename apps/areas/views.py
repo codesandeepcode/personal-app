@@ -37,19 +37,19 @@ class AreaDetailView(APIView):
     permission_classes = []  # No permissions required for this view
 
     
-    def get_object(self, pk):
+    def get_object(self, slug):
         """
         Retrieve an area object by its primary key.
         """
         try:
-            return Area.active_objects.get(pk=pk)
+            return Area.active_objects.get(slug=slug)
         except Area.DoesNotExist:
             return Http404("Area not found.")
 
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, request, slug, *args, **kwargs):
         """
         Handle GET requests to retrieve a specific area by its ID.
         """
-        area = self.get_object(pk)
+        area = self.get_object(slug)
         serializer = AreaSerializer(area)
         return Response(serializer.data, status=status.HTTP_200_OK)
