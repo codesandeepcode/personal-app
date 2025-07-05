@@ -27,7 +27,7 @@ THIRD_PARTY_APPS = (
     "drf_spectacular_sidecar",
 )
 LOCAL_APPS = (
-    "apps.accounts",
+    "apps.users",
     "apps.areas",
     "apps.family",
     "apps.finances",
@@ -99,7 +99,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -151,3 +151,5 @@ SPECTACULAR_SETTINGS = {
 #CSRF_COOKIE_SECURE = True   # CSRF cookies only sent over HTTPS
 #SECURE_BROWSER_XSS_FILTER = True  # Enable XSS filtering
 #SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME type sniffing
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

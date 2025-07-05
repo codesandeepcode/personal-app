@@ -15,7 +15,7 @@ urlpatterns = [
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path('admin/', admin.site.urls),
     path("finances/", include("apps.finances.urls")),
-    path("accounts/", include("apps.accounts.urls")),
+    path("users/", include("apps.users.urls")),
     path("docs/", include("docs.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),

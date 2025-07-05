@@ -1,5 +1,5 @@
 from django.test import TestCase
-from apps.accounts.models.user import User
+from apps.users.models.user import User
 from .models import BankAccount, Transaction, Transfer
 
 class TransactionTestCase(TestCase):
