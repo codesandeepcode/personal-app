@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from .serializers import UserSerializer
@@ -21,6 +21,10 @@ def signup(request):
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = "accounts/login.html"
+
+
+class CustomLogoutView(LogoutView):
+    template_name = "accounts/logout.html"
 
 class RegisterView(APIView):
     def post(self, request):
