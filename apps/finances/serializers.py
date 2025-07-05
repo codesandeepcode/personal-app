@@ -1,12 +1,13 @@
 from rest_framework import serializers
 
-from .models import BankAccount, Category, SubCategory, Transaction, FixedExpense, Investment, Borrowing, Plan
+from .models import BankAccount, Category, SubCategory, Transaction, RecurringTransaction, Investment, Borrowing, Plan, Transfer
 
 
 class BankAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccount
-        exclude = ("id", "created_at", "updated_at",)
+        fields = ["id", "account_name", "account_number", "bank_name", "balance", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,12 +28,41 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        exclude = ("id", "created_at", "updated_at",)
+        fields = (
+            "id",
+            "bank_account",
+            "amount",
+            "transaction_type",
+            "description",
+            "category",
+            "subcategory",
+            "date",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "created_at", "updated_at",)
 
 
-class FixedExpenseSerializer(serializers.ModelSerializer):
+class TransferSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = FixedExpense
+        model = Transfer
+        fields = ["id", "source_account", "destination_account", "amount", "description", "date", "created_at", "updated_at"]
+        read_only_fields = ("id", "created_at", "updated_at")
+
+    def validate(self, attrs):
+        if attrs['source_account'] == attrs['destination_account']:
+            raise serializers.ValidationError("Source and destination accounts cannot be the same.")
+        if attrs["source_account"].balance < attrs["amount"]:
+            raise serializers.ValidationError("Insufficient funds in the source account.")
+        if attrs["source_account"].user != self.context["request"].user or attrs["destination_account"].user != self.context["request"].user:
+            raise serializers.ValidationError("Source and destination accounts must belong to the user.")
+        return attrs
+
+
+class RecurringTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecurringTransaction
         exclude = ("id", "created_at", "updated_at",)
 
 

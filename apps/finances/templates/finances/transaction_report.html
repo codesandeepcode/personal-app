@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Transaction Report</h1>
+<form method="get" class="mt-3">
+    <div class="form-row">
+        <div class="col">
+            <label for="start_date">Start Date:</label>
+            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ start_date }}">
+        </div>
+        <div class="col">
+            <label for="end_date">End Date:</label>
+            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end_date }}">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Generate Report</button>
+</form>
+<div class="mt-3">
+    <p>Total Deposits: {{ total_deposits }}</p>
+    <p>Total Withdrawals: {{ total_withdrawals }}</p>
+    <p>Total Transfers: {{ total_transfers }}</p>
+    <p>Net Change: {{ net_change }}</p>
+</div>
+{% endblock %}

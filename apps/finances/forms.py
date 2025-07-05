@@ -1,18 +1,12 @@
 from django import forms
 
-from .models import Bank, BankBalance, Category, Transaction
+from .models import BankAccount, Category, Transaction
 
 
-class BankForm(forms.ModelForm):
+class BankAccountForm(forms.ModelForm):
     class Meta:
-        model = Bank
-        fields = ["name"]
-
-
-class BankBalanceForm(forms.ModelForm):
-    class Meta:
-        model = BankBalance
-        fields = ["bank", "balance"]
+        model = BankAccount
+        fields = ["account_name"]
 
 
 class CategoryForm(forms.ModelForm):
@@ -24,4 +18,4 @@ class CategoryForm(forms.ModelForm):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ["bank", "category", "amount", "reason", "date", "is_debit"]
+        fields = ["bank_account", "amount", "transaction_type", "description"]
