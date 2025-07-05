@@ -1,9 +1,14 @@
+"""
+URL configuration for user authentication and registration.
+"""
 from django.urls import path
-from .views import RegisterView, CustomLoginView, signup, CustomLogoutView
+from . import views, api_views
 
 urlpatterns = [
-    path("signup/", signup, name="signup"),
-    path("login/", CustomLoginView.as_view(), name="login"),
-    path("logout/", CustomLogoutView.as_view(), name="logout"),
-    path('api/register/', RegisterView.as_view(), name="sign_up"),
+    path("api/register/", api_views.RegisterView.as_view(), name="api_register"),
+    path("api/login/", api_views.LoginView.as_view(), name="api_login"),
+    path("api/profile/", api_views.UserProfileView.as_view(), name="api_profile"),
+    path("login/", views.login_view, name="login"),
+    path("dashboard/", views.dashboard_view, name="dashboard"),
+    path("logout/", views.logout_view, name="logout"),
 ]

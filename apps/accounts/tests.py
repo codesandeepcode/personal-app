@@ -1,43 +1,43 @@
-from django.contrib.auth import get_user_model
+"""
+Tests for the custom user model and its manager.
+"""
+import pytest
 from django.test import TestCase
+from .models import User
 
 
-class UserManagerTests(TestCase):
-
+@pytest.mark.django_db
+class UserModelTests(TestCase):
     def test_create_user(self):
-        User = get_user_model()
-        user = User.objects.create_user(
-            email="normal@user.com",
-            password="foo",
-        )
-        self.assertEqual(user.email, "normal@user.com")
+        """Test creating a user with valid email and password."""
+        email = "test@example.com"
+        password = "securepassword123"
+        user = User.objects.create_user(email=email, password=password, name="Test User")
+        self.assertEqual(user.email, email)
+        self.assertTrue(user.check_password(password))
+        self.assertEqual(user.name, "Test User")
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
-        try:
-            self.assertIsNone(user.username)
-        except AttributeError:
-            pass
-        with self.assertRaises(TypeError):
-            User.objects.create_user()
-        with self.assertRaises(TypeError):
-            User.objects.create_user(email="")
+
+    def test_create_user_no_email(self):
+        """Test creating a user without an email raises ValueError."""
         with self.assertRaises(ValueError):
-            User.objects.create_user(email="", password="foo")
+            User.objects.create_user(email="", password="securepassword123")
 
     def test_create_superuser(self):
-        User = get_user_model()
-        admin_user = User.objects.create_superuser(
-            email="super@user.com",
-            password="foo",
-        )
-        self.assertEqual(admin_user.email, "super@user.com")
-        self.assertTrue(admin_user.is_active)
-        self.assertTrue(admin_user.is_staff)
-        self.assertTrue(admin_user.is_superuser)
-        try:
-            self.assertIsNone(admin_user.username)
-        except AttributeError:
-            pass
+        """Test creating a superuser with valid email and password."""
+        email = "admin@example.com"
+        password = "adminpassword123"
+        user = User.objects.create_superuser(email=email, password=password, name="Admin User")
+        self.assertEqual(user.email, email)
+        self.assertTrue(user.check_password(password))
+        self.assertEqual(user.name, "Admin User")
+        self.assertTrue(user.is_active)
+        self.assertTrue(user.is_staff)
+        self.assertTrue(user.is_superuser)
+
+    def test_create_superuser_invalid(self):
+        """Test creating a superuser with is_staff=False raises ValueError."""
         with self.assertRaises(ValueError):
-            User.objects.create_superuser(email="super@user.com", password="foo", is_superuser=False)
+            User.objects.create_superuser(email="admin@example.com", password="adminpassword123", is_staff=False)

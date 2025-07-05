@@ -1,34 +1,33 @@
-from django.contrib.auth.views import LoginView, LogoutView
+"""
+session-based views for authentication and user management using UI.
+"""
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from rest_framework.views import APIView
-from .serializers import UserSerializer
-from .forms import CustomAuthenticationForm, CustomUserCreationForm
-from rest_framework.response import Response
 
 
-def signup(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("login")
+def login_view(request):
+    """Handle session-based user login for UI."""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
         else:
-            return Response(form.errors, status=400)
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, "accounts/signup.html", {"form": form})
-
-class CustomLoginView(LoginView):
-    authentication_form = CustomAuthenticationForm
-    template_name = "accounts/login.html"
+            return render(request, 'accounts/login.html', {'error': 'Invalid credentials.'})
+    return render(request, 'accounts/login.html')
 
 
-class CustomLogoutView(LogoutView):
-    template_name = "accounts/logout.html"
+@login_required
+def dashboard_view(request):
+    """Render the user dashboard."""
+    return render(request, 'accounts/dashboard.html', {'user': request.user})
 
-class RegisterView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+
+@login_required
+def logout_view(request):
+    """Handle user logout."""
+    logout(request)
+    return redirect('login')

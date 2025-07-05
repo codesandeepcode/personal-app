@@ -1,22 +1,22 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth import authenticate
-from .models import CustomUser
+from .models import User
 
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta():
-        model = CustomUser
+        model = User
         fields = ('email', 'name')
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta():
-        model = CustomUser
+        model = User
         fields = ('email', 'name')
 
 class CustomAuthenticationForm(AuthenticationForm):  
     class Meta:
-        model = CustomUser
+        model = User
         fields = ('email', 'password')
     
     def clean(self):
